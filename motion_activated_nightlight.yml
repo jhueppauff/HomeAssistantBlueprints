@@ -2,7 +2,7 @@ blueprint:
   name: Fade on lights in the evening if motion is detected
   description: Fade on lights in the evening if motion is detected, but stops after a certain time
   domain: automation
-  source_url: https://github.com/OliverHi/blueprints/blob/42a969d6a793c818bfc5cd1ca932b4fa08767ae7/motion_brightness_light.yaml
+  source_url: https://github.com/jhueppauff/HomeAssistantBlueprints/blob/main/motion_activated_nightlight.yml
   input:
     motion_entity:
       name: Motion Sensor
