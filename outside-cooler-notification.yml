@@ -1,0 +1,57 @@
+blueprint:
+  name: Outside is cooler than inside
+  description: Fade on lights in the evening if motion is detected, but stops after a certain time
+  domain: automation
+  source_url: https://github.com/jhueppauff/HomeAssistantBlueprints/blob/main/outside-cooler-notification.yml
+  input:
+    tempSensor:
+      name: Temperature Sensor
+      selector:
+        entity:
+          domain: sensor
+          device_class: temperature
+    tempSensorOutside:
+      name: Temperature Sensor
+      selector:
+        entity:
+          domain: sensor
+          device_class: temperature
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications
+      selector:
+        device:
+          integration: mobile_app
+    tempThreshold:
+      name: Temperature threshold when 
+      description: Define threshold when to warn
+      default: 24
+      selector:
+        number:
+          min: -20
+          max: 40
+          unit_of_measurement: temperature
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  platform: template
+  value_template: >
+    {{ states.sensor.tempSensor.state > 
+           states.sensor.sensor.tempSensorOutside.state }}
+
+condition:
+  - condition: numeric_state
+    entity_id: sensor.openweathermap_temperature
+    above: !input tempThreshold
+  - condition: state
+    entity_id: input_boolean.tempComparision
+    state: 'on'
+
+action:
+  - device_id: !input notify_device
+    domain: mobile_app
+    type: notify
+    title: Close Windows - it is getting warmer
+    message: Its warmer outside, consider closing windows
