@@ -43,7 +43,7 @@ trigger:
 
 condition:
   - condition: numeric_state
-    entity_id: sensor.openweathermap_temperature
+    entity_id: sensor.tempSensorOutside
     above: !input tempThreshold
   - condition: state
     entity_id: input_boolean.tempComparision
