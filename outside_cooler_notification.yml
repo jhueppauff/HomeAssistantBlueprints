@@ -39,7 +39,7 @@ trigger:
   platform: template
   value_template: >
     {{ states.sensor.tempSensor.state > 
-           states.sensor.sensor.tempSensorOutside.state }}
+           states.sensor.tempSensorOutside.state }}
 
 condition:
   - condition: numeric_state
