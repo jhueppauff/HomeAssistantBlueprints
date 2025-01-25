@@ -1,6 +1,6 @@
 blueprint:
-  name: General Light Control
-  description: Turn on/off a light with any trigger, and reduce brightness after 8 PM.
+  name: MQTT Light Control
+  description: Turn on/off a light with MQTT messages, and reduce brightness after 8 PM.
   domain: automation
   input:
     motion_sensor:
@@ -9,11 +9,11 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    general_trigger:
-      name: General Trigger
-      description: Any entity to trigger the light
+    mqtt_topic:
+      name: MQTT Topic
+      description: The MQTT topic to trigger the light
       selector:
-        entity: {}
+        text:
     light_target:
       name: Light
       description: The light to control
@@ -26,8 +26,8 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: state
-    entity_id: !input general_trigger
+  - platform: mqtt
+    topic: !input mqtt_topic
 
 condition: []
 
