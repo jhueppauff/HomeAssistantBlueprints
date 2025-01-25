@@ -9,12 +9,11 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    wall_switch:
-      name: Wall Switch
-      description: The wall switch to trigger the light
+    wall_switch_event:
+      name: Wall Switch Event
+      description: The event for the wall switch
       selector:
-        entity:
-          domain: action
+        text: {}
     light_target:
       name: Light
       description: The light to be controlled
@@ -49,9 +48,8 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: state
-    entity_id: !input wall_switch
-    to: 'on'
+  - platform: event
+    event_type: !input wall_switch_event
 
 condition: []
 
@@ -81,9 +79,8 @@ action:
       entity_id: !input light_target
   - alias: Turn off light on switch press
     trigger:
-      - platform: state
-        entity_id: !input wall_switch
-        to: 'off'
+      - platform: event
+        event_type: !input wall_switch_event
     action:
       - service: light.turn_off
         target:
