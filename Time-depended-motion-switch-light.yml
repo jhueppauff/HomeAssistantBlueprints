@@ -13,8 +13,7 @@ blueprint:
       name: General Trigger
       description: Any entity to trigger the light
       selector:
-        entity:
-          domain: switch
+        entity: {}
     light_target:
       name: Light
       description: The light to control
@@ -29,7 +28,6 @@ trigger:
     to: 'on'
   - platform: state
     entity_id: !input general_trigger
-    to: 'on'
 
 condition: []
 
