@@ -12,11 +12,6 @@ blueprint:
     hue_switch_button:
       name: Hue Wall Switch Button
       description: The Hue wall switch button to control the light
-      selector:
-        device:
-          integration: mqtt
-          manufacturer: Philips
-          model: Hue Wall Switch
     light_target:
       name: Light
       description: The light to control
