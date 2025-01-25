@@ -9,11 +9,12 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    wall_switch_trigger:
-      name: Wall Switch Trigger
-      description: The MQTT topic for the wall switch trigger
+    wall_switch:
+      name: Wall Switch
+      description: The wall switch to trigger the light
       selector:
-        text: {}
+        entity:
+          domain: mqtt
     light_target:
       name: Light
       description: The light to be controlled
@@ -48,8 +49,9 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: mqtt
-    topic: !input wall_switch_trigger
+  - platform: state
+    entity_id: !input wall_switch
+    to: 'on'
 
 condition: []
 
@@ -79,8 +81,9 @@ action:
       entity_id: !input light_target
   - alias: Turn off light on switch press
     trigger:
-      - platform: mqtt
-        topic: !input wall_switch_trigger
+      - platform: state
+        entity_id: !input wall_switch
+        to: 'off'
     action:
       - service: light.turn_off
         target:
