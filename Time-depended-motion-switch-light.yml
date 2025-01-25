@@ -1,6 +1,6 @@
 blueprint:
-  name: MQTT Light Control
-  description: Turn on/off a light with MQTT messages, and reduce brightness after 8 PM.
+  name: Motion and Switch Activated Light
+  description: Turn on a light with motion or switch, with reduced brightness after 8 PM.
   domain: automation
   input:
     motion_sensor:
@@ -9,32 +9,49 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    mqtt_device:
-      name: MQTT Device
-      description: The MQTT device to trigger the light
+    wall_switch:
+      name: Wall Switch
+      description: The wall switch to trigger the light
       selector:
-        device:
-          integration: mqtt
-    mqtt_topic:
-      name: MQTT Topic
-      description: The MQTT topic to trigger the light
-      selector:
-        text:
+        entity:
+          domain: switch
     light_target:
       name: Light
-      description: The light to control
+      description: The light to be controlled
       selector:
-        target:
-          entity:
-            domain: light
+        entity:
+          domain: light
+    after_time:
+      name: Time for Reduced Brightness
+      description: Time after which the light should turn on with reduced brightness
+      default: '20:00:00'
+      selector:
+        time:
+    reduced_brightness:
+      name: Reduced Brightness Level
+      description: Brightness level after the specified time
+      default: 50
+      selector:
+        number:
+          min: 1
+          max: 255
+    delay_off:
+      name: Delay Before Turning Off
+      description: Time to wait before turning off the light after motion stops
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 60
+          unit_of_measurement: minutes
 
 trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: mqtt
-    topic: !input mqtt_topic
-    device_id: !input mqtt_device
+  - platform: state
+    entity_id: !input wall_switch
+    to: 'on'
 
 condition: []
 
@@ -42,17 +59,23 @@ action:
   - choose:
       - conditions:
           - condition: time
-            after: '20:00:00'
+            after: !input after_time
         sequence:
           - service: light.turn_on
-            target: !input light_target
+            target:
+              entity_id: !input light_target
             data:
-              brightness_pct: 50
+              brightness: !input reduced_brightness
       - conditions: []
         sequence:
           - service: light.turn_on
-            target: !input light_target
-            data:
-              brightness_pct: 100
-
-mode: single
+            target:
+              entity_id: !input light_target
+  - delay:
+      minutes: !input delay_off
+  - condition: state
+    entity_id: !input motion_sensor
+    state: 'off'
+  - service: light.turn_off
+    target:
+      entity_id: !input light_target
