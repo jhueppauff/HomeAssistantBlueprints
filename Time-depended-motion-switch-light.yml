@@ -9,9 +9,9 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    hue_switch:
-      name: Hue Wall Switch
-      description: The Hue wall switch to control the light
+    hue_switch_button:
+      name: Hue Wall Switch Button
+      description: The Hue wall switch button to control the light
       selector:
         entity:
           domain: sensor
@@ -27,9 +27,9 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: state
-    entity_id: !input hue_switch
-    to: 'on'
+  - platform: mqtt
+    topic: 'zigbee2mqtt/<your_hue_switch>/action'
+    payload: 'button_press'
 
 condition: []
 
