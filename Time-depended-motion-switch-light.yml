@@ -9,9 +9,16 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    wall_switch_event:
-      name: Wall Switch Event
-      description: The event for the wall switch
+    wall_switch:
+      name: Wall Switch
+      description: The name of the Switch in Zigbee2MQTT (Not the name of your Home-Assistent Entity)
+      default: ""
+      selector:
+        text: {}
+    base_topic:
+      name: Root/Base mqtt topic from Zigbee2MQTT
+      description: The Root/base topic as configured in Zigbee2MQTT (If you don't configure it, you can leave the default --> "zigbee2mqtt")
+      default: zigbee2mqtt
       selector:
         text: {}
     light_target:
@@ -48,8 +55,9 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: event
-    event_type: !input wall_switch_event
+  - platform: mqtt
+    topic: "{{ !input base_topic }}/{{ !input wall_switch }}"
+    payload: 'left_press_release'
 
 condition: []
 
@@ -79,8 +87,9 @@ action:
       entity_id: !input light_target
   - alias: Turn off light on switch press
     trigger:
-      - platform: event
-        event_type: !input wall_switch_event
+      - platform: mqtt
+        topic: "{{ !input base_topic }}/{{ !input wall_switch }}"
+        payload: 'left_press_release'
     action:
       - service: light.turn_off
         target:
