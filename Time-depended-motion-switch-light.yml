@@ -13,8 +13,10 @@ blueprint:
       name: Hue Wall Switch Button
       description: The Hue wall switch button to control the light
       selector:
-        entity:
-          domain: sensor
+        device:
+          integration: mqtt
+          manufacturer: Philips
+          model: Hue Wall Switch
     light_target:
       name: Light
       description: The light to control
@@ -27,9 +29,11 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: mqtt
-    topic: 'zigbee2mqtt/<your_hue_switch>/action'
-    payload: 'button_press'
+  - platform: device
+    device_id: !input hue_switch_button
+    domain: mqtt
+    type: action
+    subtype: left_press
 
 condition: []
 
