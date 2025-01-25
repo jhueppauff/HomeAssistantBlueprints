@@ -31,9 +31,6 @@ trigger:
     to: 'on'
   - platform: device
     device_id: !input hue_switch_button
-    domain: mqtt
-    type: action
-    subtype: left_press
 
 condition: []
 
