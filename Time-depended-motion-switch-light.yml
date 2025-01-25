@@ -15,7 +15,6 @@ blueprint:
       selector:
         entity:
           domain: action
-          integration: mqtt
     light_target:
       name: Light
       description: The light to be controlled
