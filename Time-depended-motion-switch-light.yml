@@ -9,11 +9,11 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    wall_switch:
-      name: Wall Switch
-      description: The wall switch to trigger the light
+    wall_switch_trigger:
+      name: Wall Switch Trigger
+      description: The trigger for the wall switch
       selector:
-        entity: {}
+        trigger: {}
     light_target:
       name: Light
       description: The light to be controlled
@@ -48,9 +48,7 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - platform: state
-    entity_id: !input wall_switch
-    to: 'on'
+  - !input wall_switch_trigger
 
 condition: []
 
