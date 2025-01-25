@@ -77,5 +77,13 @@ action:
   - service: light.turn_off
     target:
       entity_id: !input light_target
+  - alias: Turn off light on switch press
+    trigger:
+      - platform: mqtt
+        topic: !input wall_switch_trigger
+    action:
+      - service: light.turn_off
+        target:
+          entity_id: !input light_target
 
 mode: restart
