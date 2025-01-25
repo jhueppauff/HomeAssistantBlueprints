@@ -14,7 +14,7 @@ blueprint:
       description: The wall switch to trigger the light
       selector:
         entity:
-          domain: sensor
+          domain: trigger
           integration: mqtt
     light_target:
       name: Light
