@@ -1,6 +1,6 @@
 blueprint:
   name: Motion and Switch Activated Light
-  description: Turn on a light with motion or switch, with reduced brightness after 8 PM.
+  description: Turn on a light with motion or switch, with reduced brightness after 8 PM. Turn off the light with the switch.
   domain: automation
   input:
     motion_sensor:
@@ -77,3 +77,5 @@ action:
   - service: light.turn_off
     target:
       entity_id: !input light_target
+
+mode: restart
