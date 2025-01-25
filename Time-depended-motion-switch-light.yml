@@ -48,7 +48,8 @@ trigger:
   - platform: state
     entity_id: !input motion_sensor
     to: 'on'
-  - !input wall_switch_trigger
+  - platform: mqtt
+    topic: !input wall_switch_trigger
 
 condition: []
 
