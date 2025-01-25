@@ -9,6 +9,12 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
+    mqtt_device:
+      name: MQTT Device
+      description: The MQTT device to trigger the light
+      selector:
+        device:
+          integration: mqtt
     mqtt_topic:
       name: MQTT Topic
       description: The MQTT topic to trigger the light
@@ -28,6 +34,7 @@ trigger:
     to: 'on'
   - platform: mqtt
     topic: !input mqtt_topic
+    device_id: !input mqtt_device
 
 condition: []
 
