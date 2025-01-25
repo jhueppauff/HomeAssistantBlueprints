@@ -11,9 +11,9 @@ blueprint:
           domain: binary_sensor
     wall_switch_trigger:
       name: Wall Switch Trigger
-      description: The trigger for the wall switch
+      description: The MQTT topic for the wall switch trigger
       selector:
-        trigger: {}
+        text: {}
     light_target:
       name: Light
       description: The light to be controlled
