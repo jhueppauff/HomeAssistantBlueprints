@@ -1,0 +1,53 @@
+blueprint:
+  name: Motion Sensor and Hue Switch Light Control
+  description: Turn on/off a light with a motion sensor and Hue wall switch, and reduce brightness after 8 PM.
+  domain: automation
+  input:
+    motion_sensor:
+      name: Motion Sensor
+      description: The motion sensor to trigger the light
+      selector:
+        entity:
+          domain: binary_sensor
+    hue_switch:
+      name: Hue Wall Switch
+      description: The Hue wall switch to control the light
+      selector:
+        entity:
+          domain: sensor
+    light_target:
+      name: Light
+      description: The light to control
+      selector:
+        target:
+          entity:
+            domain: light
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensor
+    to: 'on'
+  - platform: state
+    entity_id: !input hue_switch
+    to: 'on'
+
+condition: []
+
+action:
+  - choose:
+      - conditions:
+          - condition: time
+            after: '20:00:00'
+        sequence:
+          - service: light.turn_on
+            target: !input light_target
+            data:
+              brightness_pct: 50
+      - conditions: []
+        sequence:
+          - service: light.turn_on
+            target: !input light_target
+            data:
+              brightness_pct: 100
+
+mode: single
