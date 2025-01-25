@@ -13,7 +13,8 @@ blueprint:
       name: General Trigger
       description: Any entity to trigger the light
       selector:
-        entity: {}
+        entity:
+          domain: switch
     light_target:
       name: Light
       description: The light to control
