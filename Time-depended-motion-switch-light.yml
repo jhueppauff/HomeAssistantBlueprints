@@ -24,9 +24,8 @@ trigger:
     subtype: left_press_release
 
 action:
-  - type: toggle
-    device_id: !input light_device
-    entity_id: !input light_device
-    domain: light
+  - action: light.toggle
+    target: 
+      entity_id: !input light_device
 
 mode: single
